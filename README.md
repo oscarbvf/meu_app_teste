@@ -1,24 +1,83 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# My First Rails App
 
-Things you may want to cover:
+This is a simple Ruby on Rails project created as my first experience with the framework.  
+It uses `scaffold` to implement a basic CRUD (Create, Read, Update, Delete) interface for posts.
 
-* Ruby version
+## Purpose
 
-* System dependencies
+The goal of this project is to:
 
-* Configuration
+- Learn the basics of Ruby on Rails
+- Practice using `rails generate scaffold`
+- Understand how models, views, controllers, routes, and migrations work together
+- Experiment with unit tests for models
 
-* Database creation
+## Requirements
 
-* Database initialization
+- Ruby 3.3+
+- Rails 8.x
+- PostgreSQL
+- Node.js and Yarn (for managing frontend assets)
 
-* How to run the test suite
+## Getting Started
 
-* Services (job queues, cache servers, search engines, etc.)
+1. Clone the repository:
 
-* Deployment instructions
+   git clone https://github.com/oscarbvf/meu_app_teste.git
+   cd meu_app_teste
 
-* ...
+2. Install dependencies:
+
+bundle install
+yarn install
+
+3. Create and migrate the database:
+
+rails db:create
+rails db:migrate
+
+4. Start the server:
+
+rails server
+
+5. Open your browser and go to:
+
+http://localhost:3000/posts
+
+## Running Tests
+
+1. To run model tests:
+
+rails test
+
+2. Make sure the test database is up to date:
+
+rails db:test:prepare
+
+## Features
+
+1. Scaffold-generated Post model with fields:
+
+titulo (string)
+
+conteudo (text)
+
+2. Model validations and basic unit tests
+
+3. Simple web interface for managing posts
+
+## What I Learned
+
+- How to create a new Rails project
+
+- How to use scaffold generators
+
+- How to manage migrations and validations
+
+- How to run tests with Minitest
+
+## License
+
+This project is for learning purposes and has no specific license.
