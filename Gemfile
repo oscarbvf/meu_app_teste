@@ -66,4 +66,4 @@ group :test do
   gem "selenium-webdriver"
 end
 
-gem "ruby-lsp", "~> 0.23.23"
+gem "ruby-lsp", "~> 0.23.24"
