@@ -3,8 +3,8 @@ source "https://rubygems.org"
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 8.0.2"
 
-#PostgreSQL
-gem 'pg', '~> 1.5'
+# PostgreSQL
+gem "pg", "~> 1.5"
 
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
@@ -67,3 +67,5 @@ group :test do
 end
 
 gem "ruby-lsp", "~> 0.23.23"
+
+gem "devise"

@@ -1,5 +1,3 @@
-<p style="color: green"><%= notice %></p>
-
 <% content_for :title, "Posts" %>
 
 <h1>Posts</h1>
@@ -13,5 +11,5 @@
   <% end %>
 </div>
 
-<%= link_to "New post", new_post_path if authenticated? %>
-<%= link_to "Login", new_session_path unless authenticated? %>
+<%= link_to "New post", new_post_path if user_signed_in? %>
+<%= link_to "Login", new_user_session_path unless user_signed_in? %>
