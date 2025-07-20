@@ -1,20 +1,18 @@
-<p style="color: green"><%= notice %></p>
-
 <%= render @post %>
 
 <div>
   <%= link_to "Back to posts", posts_path %>
-  <% if authenticated? %>
+  <% if user_signed_in? %>
     | <%= link_to "Edit this post", edit_post_path(@post) %>
     <p><%= button_to "Destroy this post", @post, method: :delete %></p>
 
     <h3>Comments</h3>
     <% @post.comments.each do |comment| %>
-      <p><strong><%= comment.user.email_address %></strong>: <%= comment.body %>
-        <% if current_user.email_address == comment.user.email_address %> | 
-          <%= link_to "Edit", edit_post_comment_path(@post, comment) %> 
-          <%= button_to "Delete", post_comment_path(@post, comment), method: :delete %>
-        <% end %>
+      <p><strong><%= comment.user.email %></strong>: <%= comment.body %>
+      <% if user_signed_in? && current_user.id == comment.user_id %>
+        <%= link_to "Edit", edit_post_comment_path(@post, comment) %> 
+        <%= button_to "Delete", post_comment_path(@post, comment), method: :delete %>
+      <% end %>
       </p>
     <% end %>
     <%= form_with(model: [@post, Comment.new], local: true) do |form| %>

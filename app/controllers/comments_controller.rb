@@ -1,5 +1,5 @@
 class CommentsController < ApplicationController
-  before_action :require_login
+  before_action :authenticate_user!
   before_action :set_post, only: %i[ create edit update destroy ]
   before_action :set_comment, only: %i[ edit update destroy ]
 
@@ -44,10 +44,6 @@ class CommentsController < ApplicationController
 
   def comment_params
     params.require(:comment).permit(:body)
-  end
-
-  def require_login
-    redirect_to login_path unless current_user
   end
 
   def set_post
