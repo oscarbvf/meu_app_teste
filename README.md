@@ -68,6 +68,20 @@ conteudo (text)
 
 3. Simple web interface for managing posts
 
+4. Authentication
+   User authentication is implemented using Devise.
+   The following Devise modules are enabled for the User model:
+   :database_authenticatable – for basic authentication using email and password
+   :registerable – allows users to sign up
+   :recoverable – password recovery (views and controllers are ready; email delivery integration such as SendGrid is not yet configured)
+   :rememberable – remembers users across browser sessions
+   :validatable – provides validations for email and password
+
+   The application currently uses Devise's default views (no customization).
+
+   Only authenticated users can create, edit, or delete posts.
+   This is enforced via before_action :authenticate_user! in the PostsController.
+
 ## What I Learned
 
 - How to create a new Rails project
@@ -77,6 +91,8 @@ conteudo (text)
 - How to manage migrations and validations
 
 - How to run tests with Minitest
+
+- How to manage authentication with Devise
 
 ## License
 
