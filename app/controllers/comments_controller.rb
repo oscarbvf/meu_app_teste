@@ -4,25 +4,21 @@ class CommentsController < ApplicationController
   before_action :set_comment, only: %i[ edit update destroy ]
 
   def edit
-    unless @comment.user == current_user
-      redirect_to post_path(@post), alert: "You cannot edit this comment."
-    end
+    authorize @comment
   end
 
   def update
-    if @comment.user == current_user
-      if @comment.update(comment_params)
-        redirect_to post_path(@post), notice: "Comment successfully updated."
-      else
-        render :edit, status: :unprocessable_entity
-      end
+    authorize @comment
+    if @comment.update(comment_params)
+      redirect_to post_path(@post), notice: "Comment successfully updated."
     else
-      redirect_to post_path(@post), alert: "You cannot edit this comment."
+      render :edit, status: :unprocessable_entity
     end
   end
 
   def create
     @comment = @post.comments.build(comment_params.merge(user: current_user))
+    authorize @comment
 
     if @comment.save
       redirect_to post_path(@post), notice: "Comment successfully added."
@@ -32,12 +28,9 @@ class CommentsController < ApplicationController
   end
 
   def destroy
-    if @comment.user == current_user
-      @comment.destroy
-      redirect_to post_path(@post), notice: "Comment successfully deleted."
-    else
-      redirect_to post_path(@post), alert: "You cannot delete this comment."
-    end
+    authorize @comment
+    @comment.destroy
+    redirect_to post_path(@post), notice: "Comment successfully deleted."
   end
 
   private
