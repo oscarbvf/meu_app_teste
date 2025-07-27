@@ -69,3 +69,5 @@ end
 gem "ruby-lsp", "~> 0.23.23"
 
 gem "devise"
+
+gem "pundit"

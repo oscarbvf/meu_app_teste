@@ -68,7 +68,7 @@ conteudo (text)
 
 3. Simple web interface for managing posts
 
-4. Authentication
+4. Authentication with Devise
    User authentication is implemented using Devise.
    The following Devise modules are enabled for the User model:
    :database_authenticatable – for basic authentication using email and password
@@ -81,6 +81,17 @@ conteudo (text)
 
    Only authenticated users can create, edit, or delete posts.
    This is enforced via before_action :authenticate_user! in the PostsController.
+
+5. Authorization with Pundit
+   This application uses Pundit. Policies are defined to control user access to specific resources and actions based on their roles or ownership. Unauthorized actions trigger a flash alert and redirect the user to a safe location.
+
+   To ensure security:
+   - ApplicationController includes Pundit and handles Pundit::NotAuthorizedError.
+   - Controllers call authorize(resource) to enforce policy checks.
+   - Only authenticated users (via Devise) can access protected actions.
+   - Example policy: Only the author of a post can edit or delete it.
+
+   Note: The app also uses Turbo (via Hotwire) for faster navigation without full page reloads, which is fully compatible with Pundit’s redirection and flash messages.
 
 ## What I Learned
 

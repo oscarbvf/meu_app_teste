@@ -3,16 +3,19 @@
 <div>
   <%= link_to "Back to posts", posts_path %>
   <% if user_signed_in? %>
-    | <%= link_to "Edit this post", edit_post_path(@post) %>
-    <p><%= button_to "Destroy this post", @post, method: :delete %></p>
+    | <%= link_to "Edit post", edit_post_path(@post) %>
+    | <%= link_to "Delete post", post_path(@post), data: { turbo_method: :delete } %>
 
     <h3>Comments</h3>
     <% @post.comments.each do |comment| %>
       <p><strong><%= comment.user.email %></strong>: <%= comment.body %>
-      <% if user_signed_in? && current_user.id == comment.user_id %>
-        <%= link_to "Edit", edit_post_comment_path(@post, comment) %> 
-        <%= button_to "Delete", post_comment_path(@post, comment), method: :delete %>
+      <% if policy(comment).update? %> | 
+        <%= link_to 'Edit comment', edit_post_comment_path(comment.post, comment) %>
       <% end %>
+      <% if policy(comment).destroy? %> | 
+        <%= link_to 'Delete comment', post_comment_path(comment.post, comment), data: { turbo_method: :delete } %>
+      <% end %>
+
       </p>
     <% end %>
     <%= form_with(model: [@post, Comment.new], local: true) do |form| %>
