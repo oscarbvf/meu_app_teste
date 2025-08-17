@@ -93,6 +93,16 @@ conteudo (text)
 
    Note: The app also uses Turbo (via Hotwire) for faster navigation without full page reloads, which is fully compatible with Pundit’s redirection and flash messages.
 
+
+## Development Practices
+
+### Environment Variables
+This project uses the `dotenv` gem to manage environment variables securely and efficiently. Configuration values such as API keys, secret tokens, and other sensitive data are stored in a `.env` file, which is excluded from version control. This allows different environments (development, staging, production) to use separate configurations without exposing secrets.
+
+### Code Style
+This project uses `Rubocop` to enforce Ruby style guidelines and maintain code consistency. Running Rubocop helps identify and correct formatting issues, unused variables, bad naming, and other common problems. This contributes to a more readable, maintainable, and professional codebase.
+
+
 ## What I Learned
 
 - How to create a new Rails project

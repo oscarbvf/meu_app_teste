@@ -72,6 +72,11 @@ end
 
 gem "ruby-lsp", "~> 0.23.23"
 
+# Authentication login
 gem "devise"
 
+# Authorization & permissions
 gem "pundit"
+
+# TailwindCSS (without Node)
+gem "tailwindcss-rails"
