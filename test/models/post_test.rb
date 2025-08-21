@@ -1,19 +1,19 @@
 require "test_helper"
 
 class PostTest < ActiveSupport::TestCase
-  test "é válido com título e conteúdo" do
-    post = Post.new(titulo: "Olá Mundo", conteudo: "Esse é meu primeiro post!")
+  test "Valid with title and content" do
+    post = Post.new(titulo: "Hello", conteudo: "This is my first post!")
     assert post.valid?
   end
 
-  test "é inválido sem título" do
-    post = Post.new(titulo: nil, conteudo: "Conteúdo sem título")
+  test "It's not valid without title" do
+    post = Post.new(titulo: nil, conteudo: "Content without title")
     assert_not post.valid?
     assert_includes post.errors[:titulo], "can't be blank"
   end
 
-  test "é inválido sem conteúdo" do
-    post = Post.new(titulo: "Título sem conteúdo", conteudo: nil)
+  test "It's not valid without content" do
+    post = Post.new(titulo: "Title without content", conteudo: nil)
     assert_not post.valid?
     assert_includes post.errors[:conteudo], "can't be blank"
   end

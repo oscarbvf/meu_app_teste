@@ -1,4 +1,10 @@
 class CommentPolicy < ApplicationPolicy
+  class Scope < Scope
+    def resolve
+      scope.all
+    end
+  end
+
   def create?
     user.present? # user needs to be logged in
   end
@@ -13,6 +19,10 @@ class CommentPolicy < ApplicationPolicy
 
   def destroy?
     user_owns_comment? # only the owner can destroy
+  end
+
+  def show?
+    true
   end
 
   private
