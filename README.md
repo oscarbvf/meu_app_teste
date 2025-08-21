@@ -44,7 +44,7 @@ rails server
 
 5. Open your browser and go to:
 
-http://localhost:3000/posts
+http://localhost:3000/
 
 ## Running Tests
 
@@ -58,15 +58,20 @@ rails db:test:prepare
 
 ## Features
 
-1. Scaffold-generated Post model with fields:
+1. Scaffold-generated models and fields:
 
+Post:
 titulo (string)
-
 conteudo (text)
+
+Comment:
+user
+post
+body (text)
 
 2. Model validations and basic unit tests
 
-3. Simple web interface for managing posts
+3. Simple web interface for managing Posts and Comments
 
 4. Authentication with Devise
    User authentication is implemented using Devise.
@@ -89,7 +94,7 @@ conteudo (text)
    - ApplicationController includes Pundit and handles Pundit::NotAuthorizedError.
    - Controllers call authorize(resource) to enforce policy checks.
    - Only authenticated users (via Devise) can access protected actions.
-   - Example policy: Only the author of a post can edit or delete it.
+   - Example policy: Only the author of a Comment can edit or delete it.
 
    Note: The app also uses Turbo (via Hotwire) for faster navigation without full page reloads, which is fully compatible with Pundit’s redirection and flash messages.
 
