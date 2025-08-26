@@ -25,6 +25,7 @@ Devise.setup do |config|
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
+  config.mailer = "PasswordsMailer"
   config.mailer_sender = "application-sender-no-reply@meu_app_teste.com"
 
   # Configure the class responsible to send e-mails.

@@ -83,7 +83,8 @@ The goal of this project is to:
    The following Devise modules are enabled for the User model:
    :database_authenticatable – for basic authentication using email and password
    :registerable – allows users to sign up
-   :recoverable – password recovery (views and controllers are ready; email delivery integration such as SendGrid is not yet configured)
+   :recoverable – password recovery (views and controllers are ready; email delivery integration such as SendGrid is not yet configured;
+   Background job processing with **SolidQueue** (default Rails 8 queue adapter))
    :rememberable – remembers users across browser sessions
    :validatable – provides validations for email and password
 
