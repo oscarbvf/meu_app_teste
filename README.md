@@ -3,7 +3,7 @@
 # My First Rails App
 
 This is a simple Ruby on Rails project created as my first experience with the framework.  
-It uses `scaffold` to implement a basic CRUD (Create, Read, Update, Delete) interface for posts.
+It uses `scaffold` to implement a basic CRUD (Create, Read, Update, Delete) interface for posts and comments.
 
 ## Purpose
 
@@ -18,8 +18,8 @@ The goal of this project is to:
 
 - Ruby 3.3+
 - Rails 8.x
-- PostgreSQL
-- Node.js and Yarn (for managing frontend assets)
+- PostgreSQL 17.5
+- Importmap (for frontend assets with Turbo and Stimulus)
 
 ## Getting Started
 
@@ -30,43 +30,53 @@ The goal of this project is to:
 
 2. Install dependencies:
 
-bundle install
-yarn install
+   bundle install
+   yarn install
 
 3. Create and migrate the database:
 
-rails db:create
-rails db:migrate
+   rails db:create
+   rails db:migrate
 
 4. Start the server:
 
-rails server
+   rails server
 
 5. Open your browser and go to:
 
-http://localhost:3000/posts
+   http://localhost:3000
 
 ## Running Tests
 
 1. To run model tests:
 
-rails test
+   rails test
 
 2. Make sure the test database is up to date:
 
-rails db:test:prepare
+   rails db:test:prepare
 
 ## Features
 
-1. Scaffold-generated Post model with fields:
+1. Scaffold-generated models with fields:
 
-titulo (string)
+   Post:
+   - title (string)
+   - content (text)
 
-conteudo (text)
+   User:
+   - e-mail (string)
+   - password (string)
+
+   Comment:
+   - body (text)
+   - user
+   - post
+
 
 2. Model validations and basic unit tests
 
-3. Simple web interface for managing posts
+3. Simple web interface for managing Posts and Comments
 
 4. Authentication with Devise
    User authentication is implemented using Devise.
@@ -102,6 +112,20 @@ This project uses the `dotenv` gem to manage environment variables securely and 
 ### Code Style
 This project uses `Rubocop` to enforce Ruby style guidelines and maintain code consistency. Running Rubocop helps identify and correct formatting issues, unused variables, bad naming, and other common problems. This contributes to a more readable, maintainable, and professional codebase.
 
+## Running the Application with Docker
+
+This project provides Docker configuration to simplify setup and development. You can run the application in containers without installing Ruby, PostgreSQL, or Node.js locally.
+
+### Steps:
+
+1. Build and start the containers:
+   docker-compose up --build
+
+2. Run database setup inside the container:
+   docker-compose exec web bin/rails db:setup
+
+3. Access the application in your browser at http://localhost:3000
+
 
 ## What I Learned
 
@@ -114,6 +138,8 @@ This project uses `Rubocop` to enforce Ruby style guidelines and maintain code c
 - How to run tests with Minitest
 
 - How to manage authentication with Devise
+
+- How to configure, build and run the application with Docker
 
 ## License
 
