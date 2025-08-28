@@ -1,11 +1,8 @@
-<% content_for :title, "New post" %>
+<%= turbo_frame_tag "new_post" do %>
+  <div class="card p-6 space-y-4">
+    <h2 class="text-xl font-bold">New Post</h2>
 
-<h1>New post</h1>
+    <%= render "form", post: @post %>
 
-<%= render "form", post: @post %>
-
-<br>
-
-<div>
-  <%= link_to "Back to posts", posts_path %>
-</div>
+  </div>
+<% end %>

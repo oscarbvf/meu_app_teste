@@ -1,4 +1,6 @@
 class PostsController < ApplicationController
+  include ActionView::RecordIdentifier
+
   before_action :set_post, only: %i[ show edit update destroy ]
   skip_before_action :authenticate_user!, only: [ :index, :show ]
 
@@ -9,7 +11,10 @@ class PostsController < ApplicationController
 
   # GET /posts/1 or /posts/1.json
   def show
-    @post = Post.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.turbo_stream { render partial: "posts/post", formats: [ :html ], locals: { post: @post } }
+    end
   end
 
   # GET /posts/new
@@ -20,7 +25,12 @@ class PostsController < ApplicationController
 
   # GET /posts/1/edit
   def edit
+    @post = Post.find(params[:id])
     authorize @post
+    respond_to do |format|
+      format.html
+      format.turbo_stream { render :edit }
+    end
   end
 
   # POST /posts or /posts.json
@@ -30,11 +40,11 @@ class PostsController < ApplicationController
 
     respond_to do |format|
       if @post.save
-        format.html { redirect_to @post, notice: "Post was successfully created." }
-        format.json { render :show, status: :created, location: @post }
+        format.html { redirect_to posts_path, notice: "Post was successfully created." }
+        format.turbo_stream
       else
         format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @post.errors, status: :unprocessable_entity }
+        format.turbo_stream { render :new, status: :unprocessable_entity }
       end
     end
   end
@@ -42,13 +52,15 @@ class PostsController < ApplicationController
   # PATCH/PUT /posts/1 or /posts/1.json
   def update
     authorize @post
-    respond_to do |format|
-      if @post.update(post_params)
-        format.html { redirect_to @post, notice: "Post was successfully updated." }
-        format.json { render :show, status: :ok, location: @post }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @post.errors, status: :unprocessable_entity }
+    if @post.update(post_params)
+      respond_to do |format|
+        format.turbo_stream { render :update } # update.turbo_stream.erb
+        format.html { redirect_to post_path(@post), notice: "Post updated" }
+      end
+    else
+      respond_to do |format|
+        format.turbo_stream { render :edit } # mostra o form com erros
+        format.html { render :edit }
       end
     end
   end
@@ -56,22 +68,20 @@ class PostsController < ApplicationController
   # DELETE /posts/1 or /posts/1.json
   def destroy
     authorize @post
-    @post.destroy!
-
+    @post.destroy
     respond_to do |format|
-      format.html { redirect_to posts_path, status: :see_other, notice: "Post was successfully destroyed." }
-      format.json { head :no_content }
+      format.turbo_stream { render :destroy } # remove o post do frame
+      format.html { redirect_to posts_path, notice: "Post was successfully deleted" }
     end
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_post
-      @post = Post.find(params.expect(:id))
+      @post = Post.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def post_params
-      params.expect(post: [ :titulo, :conteudo ])
+      params.require(:post).permit(:titulo, :conteudo)
     end
 end

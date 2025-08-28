@@ -1,29 +1,18 @@
-<%= render @post %>
+<%= turbo_frame_tag dom_id(@post) do %>
+  <%= render @post %>
 
-<div>
-  <%= link_to "Back to posts", posts_path %>
-  <% if user_signed_in? %>
-    | <%= link_to "Edit post", edit_post_path(@post) %>
-    | <%= link_to "Delete post", post_path(@post), data: { turbo_method: :delete } %>
+  <div class="mt-4">
 
-    <h3>Comments</h3>
-    <% @post.comments.each do |comment| %>
-      <p><strong><%= comment.user.email %></strong>: <%= comment.body %>
-      <% if policy(comment).update? %> | 
-        <%= link_to 'Edit comment', edit_post_comment_path(comment.post, comment) %>
-      <% end %>
-      <% if policy(comment).destroy? %> | 
-        <%= link_to 'Delete comment', post_comment_path(comment.post, comment), data: { turbo_method: :delete } %>
-      <% end %>
+    <% if user_signed_in? %>
 
-      </p>
-    <% end %>
-    <%= form_with(model: [@post, Comment.new], local: true) do |form| %>
-      <div>
-        <%= form.label :body, "New comment" %><br>
-        <%= form.text_area :body %>
+      <div class="mt-4 pl-4 border-l border-gray-200">
+        <h3 class="mt-6 font-bold text-lg">Comments</h3>
+        <%= render "comments/comments", comments: @post.comments, post: @post %>
+        <%= render "comments/form", post: @post, comment: Comment.new %>
+<!--        <%= link_to "Cancel", posts_path, data: { turbo_frame: dom_id(@post) }, 
+                    class: "text-sm text-gray-500 hover:underline" %> -->
       </div>
-      <%= form.submit "Post comment" %>
     <% end %>
-  <% end %>
-</div>
+
+  </div>
+<% end %>

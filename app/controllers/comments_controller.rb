@@ -1,43 +1,67 @@
 class CommentsController < ApplicationController
+  include ActionView::RecordIdentifier
+
   before_action :authenticate_user!
   before_action :set_post, only: %i[ create edit update destroy ]
   before_action :set_comment, only: %i[ edit update destroy ]
 
-  def edit
-    authorize @comment
-  end
+  def create
+    @post = Post.find(params[:post_id])
+    @comment = @post.comments.build(comment_params.merge(user: current_user))
 
-  def update
-    authorize @comment
-    if @comment.update(comment_params)
-      redirect_to post_path(@post), notice: "Comment successfully updated."
-    else
-      render :edit, status: :unprocessable_entity
+    respond_to do |format|
+      if @comment.save
+        format.turbo_stream
+        format.html { redirect_to @post, notice: "Comment added" }
+      else
+        format.turbo_stream { render turbo_stream: turbo_stream.replace(
+          dom_id(@post, :new_comment),
+          partial: "comments/form",
+          locals: { post: @post, comment: @comment }
+        )}
+        format.html { render :new, status: :unprocessable_entity }
+      end
     end
   end
 
-  def create
-    @comment = @post.comments.build(comment_params.merge(user: current_user))
-    authorize @comment
+  def edit
+  end
 
-    if @comment.save
-      redirect_to post_path(@post), notice: "Comment successfully added."
+  def update
+    if @comment.update(comment_params)
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace(
+            dom_id(@comment),
+            partial: "comments/comment",
+            locals: { comment: @comment }
+          )
+        end
+        format.html { redirect_to @post, notice: "Comment updated successfully." }
+      end
     else
-      redirect_to post_path(@post), alert: "Error please try again."
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace(
+            dom_id(@comment),
+            partial: "comments/form",
+            locals: { post: @post, comment: @comment }
+          )
+        end
+        format.html { render :edit, status: :unprocessable_entity }
+      end
     end
   end
 
   def destroy
-    authorize @comment
     @comment.destroy
-    redirect_to post_path(@post), notice: "Comment successfully deleted."
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: turbo_stream.remove(dom_id(@comment)) }
+      format.html { redirect_to @post, notice: "Comment deleted." }
+    end
   end
 
   private
-
-  def comment_params
-    params.require(:comment).permit(:body)
-  end
 
   def set_post
     @post = Post.find(params[:post_id])
@@ -45,5 +69,9 @@ class CommentsController < ApplicationController
 
   def set_comment
     @comment = @post.comments.find(params[:id])
+  end
+
+  def comment_params
+    params.require(:comment).permit(:body)
   end
 end

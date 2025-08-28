@@ -1,0 +1,7 @@
+<%= turbo_stream.prepend "posts_list" do %>
+  <%= turbo_frame_tag dom_id(@post) do %>
+    <%= render @post %>
+  <% end %>
+<% end %>
+
+<%= turbo_stream.update "new_post", "" %>
