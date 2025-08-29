@@ -1,69 +1,69 @@
 # syntax=docker/dockerfile:1
 
-# Define a versão do Ruby
+# Define Ruby version
 ARG RUBY_VERSION=3.3.8
 FROM ruby:$RUBY_VERSION-slim AS base
 
-# Diretório da aplicação dentro do container
+# Aplication path inside the conteiner
 WORKDIR /rails
 
-# Instala dependências básicas do sistema
+# Install basic packages
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y \
         build-essential libpq-dev curl libjemalloc2 libvips sqlite3 git && \
     rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
-# Configura variáveis de ambiente para bundler
+# Config environment to bundler
 ENV RAILS_ENV="production" \
     BUNDLE_DEPLOYMENT="1" \
     BUNDLE_PATH="/usr/local/bundle" \
     BUNDLE_WITHOUT="development"
 
-# Estágio de build para reduzir tamanho da imagem final
+# Build stage to reduce final image size
 FROM base AS build
 
-# Instala pacotes adicionais para build de gems
+# Install other packages to build gems
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y libyaml-dev pkg-config && \
     rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
-# Copia Gemfile e Gemfile.lock e instala gems
+# Copy Gemfile and Gemfile.lock and install gems
 COPY Gemfile Gemfile.lock ./
 RUN bundle install && \
     rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
     bundle exec bootsnap precompile --gemfile
 
-# Copia o código da aplicação
+# Copy application code
 COPY . .
 
-# Precompila bootsnap para acelerar boot do Rails
+# Precompile bootsnap to speed Rails boot
 RUN bundle exec bootsnap precompile app/ lib/
 
-# Ajusta arquivos binários para Linux
+# Adjust binay files to Linux
 RUN chmod +x bin/* && \
     sed -i "s/\r$//g" bin/* && \
     sed -i 's/ruby\.exe$/ruby/' bin/*
 
-# Imagem final
+# Final image
 FROM base
 
-# Copia gems e código da aplicação
+# Copy gems and application code
 COPY --from=build /usr/local/bundle /usr/local/bundle
 COPY --from=build /rails /rails
 
-# Cria usuário rails e define permissões
+# Create rails user and define permissions
 RUN groupadd --system --gid 1000 rails && \
     useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash && \
     chown -R rails:rails db log storage tmp
 
-# Usa usuário não-root
+# Use non root user
 USER 1000:1000
 
-# Define o entrypoint absoluto
+# Define absolute entrypoint
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
-# Expõe a porta 3000 para Rails
+# Expose port 3000 to Rails
 EXPOSE 3000
 
-# Comando default para iniciar servidor Rails
+# Default command to start Rails server
 CMD ["bash", "-c", "bundle exec rails server -b 0.0.0.0 -p 3000"]
