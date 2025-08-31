@@ -1,7 +1,5 @@
 <!DOCTYPE html>
 <html>
-  <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
-  <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
   <head>
     <title><%= content_for(:title) || "Meu App Teste" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -20,7 +18,7 @@
     <link rel="apple-touch-icon" href="/icon.png">
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
@@ -30,9 +28,8 @@
       <%= button_to "Log out", destroy_user_session_path, method: :delete if user_signed_in? %>
     </nav>
 
-    <% flash.each do |key, message| %>
-      <p class="flash <%= key %>"><%= message %></p>
-    <% end %>
+    <!-- Notifications container -->
+    <div data-controller="notifications" data-notifications-target="container" id="notifications"></div>
 
     <main>
       <%= yield %>

@@ -55,11 +55,12 @@ class PostsController < ApplicationController
     if @post.update(post_params)
       respond_to do |format|
         format.turbo_stream { render :update } # update.turbo_stream.erb
-        format.html { redirect_to post_path(@post), notice: "Post updated" }
+        #        format.html { redirect_to post_path(@post), notice: "Post successfully updated." }
+        format.html { redirect_to posts_path, notice: "Post successfully updated." }
       end
     else
       respond_to do |format|
-        format.turbo_stream { render :edit } # mostra o form com erros
+        format.turbo_stream { render :edit } # show errors
         format.html { render :edit }
       end
     end

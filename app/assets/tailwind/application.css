@@ -1,1 +1,33 @@
-C:/Users/Usuario/meu_app_teste/app/assets/stylesheets/application.tailwind.css
+@import "tailwindcss";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body { @apply bg-gray-50 text-gray-900; }
+  a { @apply text-blue-600 hover:underline; }
+}
+
+@layer components {
+  /* Cards */
+  .card { @apply bg-white rounded-2xl shadow p-6; }
+
+  /* Buttons */
+  .btn-primary { @apply inline-flex items-center gap-2 rounded-xl px-4 py-2 font-medium border bg-blue-600 text-white border-transparent hover:bg-blue-700; }
+  .btn-danger  { @apply inline-flex items-center gap-2 rounded-xl px-4 py-2 font-medium border bg-red-600 text-white border-transparent hover:bg-red-700; }
+
+  /* Form fields */
+  .field { @apply flex flex-col gap-1; }
+  .input { @apply border rounded-xl px-3 py-2; }
+  .label { @apply text-sm text-gray-600; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(-0.5rem); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out;
+}

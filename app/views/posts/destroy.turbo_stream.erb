@@ -1,1 +1,7 @@
 <%= turbo_stream.remove dom_id(@post) %>
+
+<%= turbo_stream.append "notifications" do %>
+  <script>
+    document.dispatchEvent(new CustomEvent("notify", { detail: { message: "Post was successfully deleted.", type: "success" } }))
+  </script>
+<% end %>
