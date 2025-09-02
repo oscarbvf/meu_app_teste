@@ -36,7 +36,7 @@ development:
 
 test:
   <<: *default
-  database: <%= ENV.fetch("POSTGRES_DB", "meu_app_teste_test") %>_test
+  database: <%= ENV.fetch("POSTGRES_TEST_DB", "meu_app_teste_test") %>
 
 
 

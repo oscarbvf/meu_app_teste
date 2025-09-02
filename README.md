@@ -93,6 +93,8 @@ The goal of this project is to:
    Only authenticated users can create, edit, or delete posts.
    This is enforced via before_action :authenticate_user! in the PostsController.
 
+   In development, password reset emails are delivered using letter_opener, allowing you to preview them directly in the tmp/letter_opener folder instead of sending real emails.
+
 5. Authorization with Pundit
    This application uses Pundit. Policies are defined to control user access to specific resources and actions based on their roles or ownership. Unauthorized actions trigger a flash alert and redirect the user to a safe location.
 
