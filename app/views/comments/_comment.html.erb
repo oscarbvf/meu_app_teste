@@ -1,23 +1,29 @@
-<div id="<%= dom_id(comment) %>" class="ml-4 p-3 rounded-lg bg-gray-50 text-sm">
-  <p>
-    <span class="font-medium text-gray-800"><%= comment.user.email %></span>:
-    <%= comment.body %>
+<%= turbo_frame_tag dom_id(comment) do %>
+  <div id="<%= dom_id(comment) %>" class="ml-4 p-3 rounded-lg bg-gray-50 text-sm"> 
+    <p>
+      <span class="font-medium text-gray-800"><%= comment.user.email %></span>:
+      <%= comment.body %>
 
-    <% if policy(comment).update? || policy(comment).destroy? %>
-      <span class="text-xs text-gray-500 ml-2">
-        (
-        <% if policy(comment).update? %>
-          <%= link_to "Edit", edit_post_comment_path(comment.post, comment),
-                data: { turbo_stream: true }, class: "text-yellow-600 hover:underline" %>
-        <% end %>
-        |
-        <% if policy(comment).destroy? %>
-          <%= link_to "Delete", post_comment_path(comment.post, comment),
-                data: { turbo_method: :delete, turbo_confirm: "Delete this comment?" },
-                class: "text-red-600 hover:underline ml-1" %>
-        <% end %>
-        )
-      </span>
-    <% end %>
-    </p>
-</div>
+      <% if policy(comment).update? || policy(comment).destroy? %>
+        <span class="text-xs text-gray-500 ml-2">
+          (
+          <% if policy(comment).update? %>
+
+            <%= link_to "Edit",
+                edit_post_comment_path(comment.post, comment),
+                data: { turbo_frame: dom_id(comment) },
+                class: "text-yellow-600 hover:underline" %>
+
+          <% end %>
+          |
+          <% if policy(comment).destroy? %>
+            <%= link_to "Delete", post_comment_path(comment.post, comment),
+                  data: { turbo_method: :delete, turbo_confirm: "Delete this comment?" },
+                  class: "text-red-600 hover:underline ml-1" %>
+          <% end %>
+          )
+        </span>
+      <% end %>
+      </p>
+  </div>
+<% end %>

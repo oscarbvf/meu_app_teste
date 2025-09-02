@@ -1,14 +1,37 @@
-<%= turbo_frame_tag dom_id(post, :new_comment) do %>
-  <%= form_with(model: [post, comment], data: { turbo_frame: dom_id(post, :comments) }) do |form| %>
-    <div class="mt-2">
-      <%= form.text_area :body, rows: 2,
-            placeholder: "Add a comment...",
-            class: "w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm" %>
-    </div>
-    <div class="mt-1">
-      <%= form.submit "Save", class: "btn-primary text-sm" %>
-      <%= link_to "Cancel", posts_path, data: { turbo_frame: dom_id(post) }, 
-              class: "btn-secondary text-sm" %>
+<%# <%= turbo_frame_tag dom_id(post, :new_comment) do %>
+<%#   <%= form_with(model: [post, comment], data: { turbo_frame: dom_id(post, :comments) }) do |form| %>
+<%#     <div class="mt-2">
+<%#       <%= form.text_area :body, rows: 2,
+<%#             placeholder: "Add a comment...",
+<%#             class: "w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm" %>
+<%#     </div>
+<%#     <div class="mt-1">
+<%#       <%= form.submit "Save", class: "btn-primary text-sm" %>
+<%#       <%= link_to "Cancel", posts_path, data: { turbo_frame: dom_id(post) }, 
+<%#               class: "btn-secondary text-sm" %>
+<%#     </div>
+<%#   <% end %>
+<%# <% end %>
+
+<%= form_with(model: [post, comment], local: false) do |form| %>
+
+  <% if comment.errors.any? %>
+    <div class="mb-2 text-red-600 text-sm">
+      <ul>
+        <% comment.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
     </div>
   <% end %>
+
+  <div class="mt-2">
+    <%= form.text_area :body, rows: 2,
+          placeholder: "Add a comment...",
+          class: "w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm" %>
+  </div>
+  <div class="mt-1">
+    <%= form.submit "Save", class: "btn-primary text-sm" %>
+    <%= link_to "Cancel", posts_path, class: "btn-secondary text-sm" %>
+  </div>
 <% end %>
