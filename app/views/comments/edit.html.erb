@@ -1,19 +1,26 @@
-<h2>Edit Comment</h2>
+<%= turbo_frame_tag dom_id(@comment) do %>
+  <%= form_with(model: [@post, @comment], local: false) do |form| %>
 
-<%= form_with model: [@post, @comment], local: true do |form| %>
-  <div>
-    <%= form.label :body, "Comment" %><br>
-    <%= form.text_area :body %>
-  </div>
+    <% if @comment.errors.any? %>
+      <div class="mb-2 text-red-600 text-sm">
+        <ul>
+          <% @comment.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
 
-  <div>
-    <%= form.submit "Update Comment" %>
-  </div>
+    <div class="mt-2">
+      <%= form.text_area :body, rows: 2, class: "w-full rounded-lg" %>
+    </div>
+  
+    <div class="mt-1">
+      <%= form.submit "Update", class: "btn-primary text-sm" %>
+      <%= link_to "Cancel",
+                  post_path(@post),
+                  data: { turbo_frame: dom_id(@comment) },
+                  class: "btn-secondary text-sm" %>
+    </div>
+  <% end %>
 <% end %>
-
-<%= link_to "Cancel", post_path(@post) %>
-
-<div>
-  <%= link_to "Show this post", @post %> |
-  <%= link_to "Back to posts", posts_path %>
-</div>

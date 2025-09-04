@@ -1,12 +1,25 @@
-<div id="<%= dom_id post %>">
-  <p>
-    <strong>Title:</strong>
-    <%= post.titulo %>
-  </p>
+<turbo-frame id="<%= dom_id(post) %>">
+  <div class="p-4 border rounded-lg shadow-sm bg-white">
+    <h2 class="text-xl font-semibold"><%= post.titulo %></h2>
+    <p class="text-gray-700 mt-2"><%= truncate(post.conteudo, length: 150) %></p>
 
-  <p>
-    <strong>Content:</strong>
-    <%= post.conteudo %>
-  </p>
+    <div class="flex items-center gap-3 mt-4 text-sm">
+      <% if user_signed_in? %>
 
-</div>
+        <!-- Show Post details inside Post frame -->
+        <%= link_to "Show", post, data: { turbo_frame: dom_id(post) }, class: "text-blue-600 hover:underline" %>
+
+        <!-- Edit inside Post frame -->
+        <%= link_to "Edit", edit_post_path(post),
+              data: { turbo_frame: dom_id(post) },
+              class: "text-yellow-600 hover:underline" %>
+
+        <!-- Delete via Turbo (automatically remove from the list) -->
+        <%= link_to "Delete", post, 
+              data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, 
+              class: "text-red-600 hover:underline" %>
+
+      <% end %>
+    </div>
+  </div>
+</turbo-frame>

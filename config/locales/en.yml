@@ -29,3 +29,8 @@
 
 en:
   hello: "Hello world"
+  activerecord:
+    attributes:
+      post:
+        titulo: "Title"
+        conteudo: "Content"

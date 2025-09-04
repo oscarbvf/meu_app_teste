@@ -23,5 +23,8 @@ module MeuAppTeste
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # Allows Propshaft to process .tailwind.css
+    config.assets.paths << Rails.root.join("app/assets/stylesheets")
   end
 end

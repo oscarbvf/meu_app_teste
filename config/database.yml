@@ -32,7 +32,7 @@ default: &default
 
 development:
   <<: *default
-  database: <%= ENV.fetch("POSTGRES_DB") %>
+  database: <%= ENV.fetch("POSTGRES_DB", "meu_app_teste_development") %>
 
 test:
   <<: *default
