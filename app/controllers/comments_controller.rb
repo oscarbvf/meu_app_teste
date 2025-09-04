@@ -11,9 +11,11 @@ class CommentsController < ApplicationController
 
     respond_to do |format|
       if @comment.save
+        flash.now[:notice] = "Comment added."
         format.turbo_stream
         format.html { redirect_to @post, notice: "Comment added." }
       else
+        flash.now[:alert] = "There was a problem creating the comment."
         format.turbo_stream do
           render turbo_stream: turbo_stream.replace(
             dom_id(@post, :new_comment),
@@ -35,37 +37,16 @@ class CommentsController < ApplicationController
   end
 
   def update
-    # if @comment.update(comment_params)
-    #  respond_to do |format|
-    #    format.turbo_stream do
-    #      render turbo_stream: turbo_stream.replace(
-    #        dom_id(@comment),
-    #        partial: "comments/comment",
-    #        locals: { comment: @comment }
-    #      )
-    #    end
-    #    format.html { redirect_to @post, notice: "Comment updated successfully." }
-    #  end
-    # else
-    #  respond_to do |format|
-    #    format.turbo_stream do
-    #      render turbo_stream: turbo_stream.replace(
-    #        dom_id(@comment),
-    #        partial: "comments/form",
-    #        locals: { post: @post, comment: @comment }
-    #      )
-    #    end
-    #    format.html { render :edit, status: :unprocessable_entity }
-    #  end
-    # end
     @comment = @post.comments.find(params[:id])
 
     if @comment.update(comment_params)
+      flash.now[:notice] = "Comment successfully updated."
       respond_to do |format|
         format.turbo_stream
         format.html { redirect_to @post, notice: "Comment updated successfully." }
       end
     else
+      flash.now[:alert] = "There was a problem updating the comment."
       respond_to do |format|
         format.turbo_stream { render :edit, status: :unprocessable_entity }
         format.html { render :edit, status: :unprocessable_entity }
@@ -74,13 +55,9 @@ class CommentsController < ApplicationController
   end
 
   def destroy
-    # @comment.destroy
-    # respond_to do |format|
-    #  format.turbo_stream { render turbo_stream: turbo_stream.remove(dom_id(@comment)) }
-    #  format.html { redirect_to @post, notice: "Comment deleted." }
-    # end
     @comment = @post.comments.find(params[:id])
     @comment.destroy
+    flash.now[:notice] = "Comment deleted."
 
     respond_to do |format|
       format.turbo_stream

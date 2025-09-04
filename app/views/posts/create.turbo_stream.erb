@@ -4,8 +4,4 @@
 
 <%= turbo_stream.update "new_post", "" %>
 
-<%= turbo_stream.append "notifications" do %>
-  <script>
-    document.dispatchEvent(new CustomEvent("notify", { detail: { message: "Post was successfully created.", type: "success" } }))
-  </script>
-<% end %>
+<%= render "shared/flash" %>

@@ -2,8 +2,4 @@
   <%= render @post %>
 <% end %>
 
-<%= turbo_stream.append "notifications" do %>
-  <script>
-    document.dispatchEvent(new CustomEvent("notify", { detail: { message: "Post was successfully updated.", type: "success" } }))
-  </script>
-<% end %>
+<%= render "shared/flash" %>

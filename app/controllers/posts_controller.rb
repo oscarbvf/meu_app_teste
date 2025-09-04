@@ -40,9 +40,11 @@ class PostsController < ApplicationController
 
     respond_to do |format|
       if @post.save
+        flash.now[:notice] = "Post was successfully created."
         format.html { redirect_to posts_path, notice: "Post was successfully created." }
         format.turbo_stream
       else
+        flash.now[:alert] = "There was a problem creating the post."
         format.html { render :new, status: :unprocessable_entity }
         format.turbo_stream { render :new, status: :unprocessable_entity }
       end
@@ -54,12 +56,13 @@ class PostsController < ApplicationController
     authorize @post
     if @post.update(post_params)
       respond_to do |format|
+        flash.now[:notice] = "Post was successfully updated."
         format.turbo_stream { render :update } # update.turbo_stream.erb
-        #        format.html { redirect_to post_path(@post), notice: "Post successfully updated." }
-        format.html { redirect_to posts_path, notice: "Post successfully updated." }
+        format.html { redirect_to posts_path, notice: "Post was successfully updated." }
       end
     else
       respond_to do |format|
+        flash.now[:alert] = "There was a problem updating the post."
         format.turbo_stream { render :edit } # show errors
         format.html { render :edit }
       end
@@ -70,9 +73,10 @@ class PostsController < ApplicationController
   def destroy
     authorize @post
     @post.destroy
+    flash.now[:notice] = "Post was successfully deleted."
     respond_to do |format|
       format.turbo_stream { render :destroy } # remove o post do frame
-      format.html { redirect_to posts_path, notice: "Post was successfully deleted" }
+      format.html { redirect_to posts_path, notice: "Post was successfully deleted." }
     end
   end
 
