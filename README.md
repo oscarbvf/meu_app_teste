@@ -75,6 +75,7 @@ The goal of this project is to:
 
 
 2. Model validations and basic unit tests
+   Basic unit tests and integration tests are included using Minitest to ensure models, validations, and CRUD operations function correctly.
 
 3. Simple web interface for managing Posts and Comments
 
@@ -86,8 +87,6 @@ The goal of this project is to:
    :recoverable – password recovery (views and controllers are ready; email delivery integration such as SendGrid is not yet configured)
    :rememberable – remembers users across browser sessions
    :validatable – provides validations for email and password
-
-   The application currently uses Devise's default views (no customization).
 
    Only authenticated users can create, edit, or delete posts.
    This is enforced via before_action :authenticate_user! in the PostsController.
@@ -101,7 +100,14 @@ The goal of this project is to:
    - Only authenticated users (via Devise) can access protected actions.
    - Example policy: Only the author of a post can edit or delete it.
 
-   Note: The app also uses Turbo (via Hotwire) for faster navigation without full page reloads, which is fully compatible with Pundit’s redirection and flash messages.
+6. User Experience Enhancements:
+   The entire user interface, including posts, comments, and navigation, is styled consistently using Tailwind CSS for modern, responsive layouts.
+
+   The app uses Turbo (via Hotwire) for faster navigation without full page reloads, which is fully compatible with Pundit’s redirection and flash messages. Posts and Comments leverage Turbo Frames and Stimulus controllers for inline updates, dynamic forms, and real-time UI enhancements.
+
+   The application uses customized Devise views for Sign In, Sign Up, and Forgot Password flows. This customization improves the user experience while preserving all Devise functionality, such as secure login, registration, and password reset.
+
+   The application features custom real-time toast notifications using a Stimulus controller and Turbo Streams. Flash messages (notice, alert, etc.) are rendered as <turbo-stream> elements with a custom notify action, which dispatches a browser event captured by the Stimulus notifications_controller. This approach allows dynamic, temporary notifications to appear on the screen without full-page reloads, automatically fading out after a few seconds for a smooth user experience.
 
 
 ## Development Practices
@@ -111,6 +117,10 @@ This project uses the `dotenv` gem to manage environment variables securely and 
 
 ### Code Style
 This project uses `Rubocop` to enforce Ruby style guidelines and maintain code consistency. Running Rubocop helps identify and correct formatting issues, unused variables, bad naming, and other common problems. This contributes to a more readable, maintainable, and professional codebase.
+
+### Backgroud Jobs
+Background job processing is handled via SolidQueue, following Rails defaults. Currently, jobs are used only for email delivery, but the infrastructure supports other future asynchronous tasks.
+
 
 ## Running the Application with Docker
 
@@ -129,17 +139,20 @@ This project provides Docker configuration to simplify setup and development. Yo
 
 ## What I Learned
 
-- How to create a new Rails project
+- How to create a full-featured Rails application with scaffold-generated CRUD for posts and comments
 
-- How to use scaffold generators
+- How to implement authentication with Devise and customize its views for a consistent, modern UI using Tailwind CSS
 
-- How to manage migrations and validations
+- How to add real-time toast notifications with Turbo Streams and Stimulus controllers
 
-- How to run tests with Minitest
+- How to enhance user experience with Turbo Frames and Stimulus for dynamic forms and inline updates
 
-- How to manage authentication with Devise
+- How to implement authorization policies with Pundit
 
-- How to configure, build and run the application with Docker
+- How to write basic tests with Minitest to ensure model validations and CRUD operations work correctly
+
+- How to configure and run the application with Docker and manage dependencies with Importmap
+
 
 ## License
 

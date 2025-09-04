@@ -1,5 +1,6 @@
 import { Application } from "@hotwired/stimulus"
 import "controllers"
+import "custom_actions/notify"
 
 const application = Application.start()
 

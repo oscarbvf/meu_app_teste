@@ -1,0 +1,6 @@
+<% flash.each do |type, message| %>
+  <turbo-stream action="notify"
+                message="<%= message %>"
+                type="<%= type %>"></turbo-stream>
+<% end %>
+<% flash.clear %>
