@@ -37,7 +37,7 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
 
   test "should update post" do
     patch post_url(@post), params: { post: { conteudo: @post.conteudo, titulo: @post.titulo } }
-    assert_redirected_to post_url(@post)
+    assert_redirected_to posts_url
   end
 
   test "should destroy post" do

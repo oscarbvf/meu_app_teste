@@ -54,7 +54,7 @@ group :development, :test do
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
 
-  gem 'letter_opener'
+  gem "letter_opener"
   gem "dotenv-rails"
 end
 
@@ -81,3 +81,6 @@ gem "pundit"
 
 # TailwindCSS (without Node)
 gem "tailwindcss-rails"
+
+# For API authentication
+gem "jwt"

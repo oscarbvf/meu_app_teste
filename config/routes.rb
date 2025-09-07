@@ -16,4 +16,14 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root "posts#index"
+
+  # Defines API namespace
+  namespace :api do
+    namespace :v1 do
+      post "login", to: "auth#login"
+      resources :posts, only: [ :index, :show, :create, :update, :destroy ] do
+        resources :comments, only: [ :index, :show, :create ]
+      end
+    end
+  end
 end
