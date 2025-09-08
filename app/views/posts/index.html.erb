@@ -13,6 +13,8 @@
   </div>
 
   <div id="posts_list" class="grid gap-4">
+    <!-- Listen to the broadcast -->
+    <%= turbo_stream_from "posts" %> 
     <!-- New Post frame -->
     <%= turbo_frame_tag "new_post" %>
 

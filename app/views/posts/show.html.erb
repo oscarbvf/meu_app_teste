@@ -7,10 +7,9 @@
 
       <div class="mt-4 pl-4 border-l border-gray-200">
         <h3 class="mt-6 font-bold text-lg">Comments</h3>
-        
-      <%#  <%= render "comments/comments", comments: @post.comments, post: @post %>
-      <%#  <%= render "comments/form", post: @post, comment: Comment.new %>
+       
         <div id="comments">
+          <%= turbo_stream_from [@post, :comments] %>
           <%= render "comments/comments", comments: @post.comments, post: @post %>
         </div>
         <div id="new_comment_form">
