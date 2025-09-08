@@ -4,11 +4,10 @@
       <span class="font-medium text-gray-800"><%= comment.user.email %></span>:
       <%= comment.body %>
 
-      <% if policy(comment).update? || policy(comment).destroy? %>
+      <% if safe_policy?(comment, :update) || safe_policy?(comment, :destroy) %>
         <span class="text-xs text-gray-500 ml-2">
           (
-          <% if policy(comment).update? %>
-
+          <% if safe_policy?(comment, :update) %>
             <%= link_to "Edit",
                 edit_post_comment_path(comment.post, comment),
                 data: { turbo_frame: dom_id(comment) },
@@ -16,7 +15,7 @@
 
           <% end %>
           |
-          <% if policy(comment).destroy? %>
+          <% if safe_policy?(comment, :destroy) %>
             <%= link_to "Delete", post_comment_path(comment.post, comment),
                   data: { turbo_method: :delete, turbo_confirm: "Delete this comment?" },
                   class: "text-red-600 hover:underline ml-1" %>

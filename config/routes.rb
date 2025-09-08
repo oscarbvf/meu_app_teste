@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     mount Rswag::Api::Engine => "/api-docs"
   end
   devise_for :users
+  mount ActionCable.server => "/cable"
   resources :posts do
     resources :comments, only: [ :create, :destroy, :edit, :update ]
   end
