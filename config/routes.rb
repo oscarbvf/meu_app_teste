@@ -22,7 +22,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       post "login", to: "auth#login"
       resources :posts, only: [ :index, :show, :create, :update, :destroy ] do
-        resources :comments, only: [ :index, :show, :create ]
+        resources :comments, only: [ :index, :show, :create, :update, :destroy ]
       end
     end
   end

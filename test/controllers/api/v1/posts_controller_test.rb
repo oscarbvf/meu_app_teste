@@ -77,4 +77,53 @@ class Api::V1::PostsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :unauthorized
   end
+
+  test "should login with valid credentials" do
+    post api_v1_login_url,
+         params: { email: @user.email, password: "password123" },
+         as: :json
+
+    assert_response :success
+    body = JSON.parse(response.body)
+
+    assert_equal "success", body["status"]
+    assert body["data"]["token"].present?, "JWT token should be present"
+  end
+
+  test "should not login with invalid password" do
+    post api_v1_login_url,
+         params: { email: @user.email, password: "wrongpass" },
+         as: :json
+
+    assert_response :unauthorized
+    body = JSON.parse(response.body)
+
+    assert_equal "error", body["status"]
+    assert_equal "Invalid email or password", body["message"]
+  end
+
+  test "should not login with non-existent user" do
+    post api_v1_login_url,
+         params: { email: "fake@example.com", password: "password123" },
+         as: :json
+
+    assert_response :unauthorized
+    body = JSON.parse(response.body)
+
+    assert_equal "error", body["status"]
+  end
+
+  test "login should return a valid JWT token" do
+    post api_v1_login_url,
+         params: { email: @user.email, password: "password123" },
+         as: :json
+
+    body = JSON.parse(response.body)
+    token = body["data"]["token"]
+
+    decoded = JWT.decode(token, Rails.application.credentials.jwt_secret, true, { algorithm: "HS256" })
+    payload = decoded.first
+
+    assert_equal @user.id, payload["user_id"]
+  end
 end
