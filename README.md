@@ -20,6 +20,9 @@ The goal of this project is to:
 - Rails 8.x
 - PostgreSQL 17.5
 - Importmap (for frontend assets with Turbo and Stimulus)
+- Devise (authentication)
+- Pundit (authorization)
+- JWT (API token authentication)
 
 ## Getting Started
 
@@ -112,6 +115,86 @@ The goal of this project is to:
 
    The application features custom real-time toast notifications using a Stimulus controller and Turbo Streams. Flash messages (notice, alert, etc.) are rendered as <turbo-stream> elements with a custom notify action, which dispatches a browser event captured by the Stimulus notifications_controller. This approach allows dynamic, temporary notifications to appear on the screen without full-page reloads, automatically fading out after a few seconds for a smooth user experience.
 
+## API v1
+
+The application exposes a RESTful API for Posts and Comments under /api/v1.
+The API uses JWT tokens for authentication and Pundit for authorization.
+
+Base URL
+http://localhost:3000/api/v1
+
+Authentication
+
+Login: POST /api/v1/auth/login
+
+Parameters: email, password
+
+Response:
+
+{
+  "token": "<jwt_token>",
+  "user": {
+    "id": 1,
+    "email": "user@example.com"
+  }
+}
+
+
+Include the JWT token in the Authorization header for protected endpoints:
+
+Authorization: Bearer <jwt_token>
+
+Posts Endpoints
+
+GET /posts → list all posts
+GET /posts/:id → show a single post
+POST /posts → create a post (authenticated)
+PATCH /posts/:id → update a post (owner only)
+DELETE /posts/:id → delete a post (owner only)
+
+Comments Endpoints
+
+GET /posts/:post_id/comments → list comments for a post
+POST /posts/:post_id/comments → create a comment (authenticated)
+PATCH /comments/:id → update a comment (owner only)
+DELETE /comments/:id → delete a comment (owner only)
+
+Sample Responses
+
+GET /posts
+
+[
+  {
+    "id": 1,
+    "title": "My First Post",
+    "content": "Post content here",
+    "user_id": 1,
+    "created_at": "2025-09-09T12:00:00Z"
+  }
+]
+
+
+Error Response
+
+{
+  "error": "Unauthorized",
+  "status": 401
+}
+
+Example cURL Requests
+
+Login
+
+curl -X POST http://localhost:3000/api/v1/auth/login \
+-H "Content-Type: application/json" \
+-d '{"email": "user@example.com", "password": "password"}'
+
+
+Get posts with JWT
+
+curl http://localhost:3000/api/v1/posts \
+-H "Authorization: Bearer <jwt_token>"
+
 
 ## Development Practices
 
@@ -151,6 +234,8 @@ This project provides Docker configuration to simplify setup and development. Yo
 - How to enhance user experience with Turbo Frames and Stimulus for dynamic forms and inline updates
 
 - How to implement authorization policies with Pundit
+
+- How to implement JWT-based API authentication
 
 - How to write basic tests with Minitest to ensure model validations and CRUD operations work correctly
 
