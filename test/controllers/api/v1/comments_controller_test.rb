@@ -6,12 +6,8 @@ class Api::V1::CommentsControllerTest < ActionDispatch::IntegrationTest
     @comment = comments(:one)
     # Get an user
     @user = users(:one)
-
     # Generate valid JWT token for tests
-    payload = { user_id: @user.id, exp: 1.hour.from_now.to_i }
-    secret = Rails.application.credentials.jwt_secret
-    @token = JWT.encode(payload, secret, "HS256")
-
+    @token = JwtService.encode(user_id: @user.id)
     @auth_headers = { "Authorization" => "Bearer #{@token}" }
   end
 
@@ -86,8 +82,7 @@ class Api::V1::CommentsControllerTest < ActionDispatch::IntegrationTest
 
   test "should not destroy comment by another user" do
     other_user = users(:two)
-    payload = { user_id: other_user.id, exp: 1.hour.from_now.to_i }
-    token = JWT.encode(payload, Rails.application.credentials.jwt_secret, "HS256")
+    token = JwtService.encode(user_id: other_user.id)
 
     delete api_v1_post_comment_url(@post, @comment),
            headers: { "Authorization" => "Bearer #{token}" },

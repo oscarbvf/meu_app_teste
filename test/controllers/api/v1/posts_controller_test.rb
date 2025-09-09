@@ -5,9 +5,7 @@ class Api::V1::PostsControllerTest < ActionDispatch::IntegrationTest
     @post = posts(:one) # fixture exists
     @user = users(:one) # or new fixture user
     # Generates JWT for the test user
-    payload = { user_id: @user.id, exp: 24.hours.from_now.to_i }
-    secret = Rails.application.credentials.jwt_secret
-    @jwt_token = JWT.encode(payload, secret, "HS256")
+    @jwt_token = JwtService.encode(user_id: @user.id)
     # Header Authorization with Bearer token
     @auth_headers = { "Authorization" => "Bearer #{@jwt_token}" }
   end
@@ -121,9 +119,7 @@ class Api::V1::PostsControllerTest < ActionDispatch::IntegrationTest
     body = JSON.parse(response.body)
     token = body["data"]["token"]
 
-    decoded = JWT.decode(token, Rails.application.credentials.jwt_secret, true, { algorithm: "HS256" })
-    payload = decoded.first
-
-    assert_equal @user.id, payload["user_id"]
+    decoded = JwtService.decode(token)
+    assert_equal @user.id, decoded[:user_id]
   end
 end

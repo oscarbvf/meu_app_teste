@@ -19,9 +19,12 @@ module Api
 
         if token.present?
           begin
-            secret = Rails.application.credentials.jwt_secret
-            decoded = JWT.decode(token, secret, true, algorithm: "HS256")
-            @current_user = User.find(decoded[0]["user_id"])
+            decoded = JwtService.decode(token)
+            if decoded.present?
+              @current_user = User.find(decoded[:user_id])
+            else
+              render_error("Invalid token", :unauthorized)
+            end
           rescue JWT::ExpiredSignature
             render_error("Token expired", :unauthorized)
           rescue JWT::DecodeError
