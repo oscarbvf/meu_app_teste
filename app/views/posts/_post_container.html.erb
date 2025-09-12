@@ -1,0 +1,9 @@
+<div id="post_<%= post.id %>_container">
+  <%= turbo_frame_tag "post_#{post.id}_content" do %>
+    <%= render "posts/post", post: post %>
+  <% end %>
+
+  <%= turbo_frame_tag "post_#{post.id}_actions" do %>
+    <%= render "posts/post_actions", post: post %>
+  <% end %>
+</div>

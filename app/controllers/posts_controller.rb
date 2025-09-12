@@ -55,11 +55,16 @@ class PostsController < ApplicationController
   def update
     authorize @post
     if @post.update(post_params)
-      respond_to do |format|
-        flash.now[:notice] = "Post was successfully updated."
-        format.turbo_stream { render :update } # update.turbo_stream.erb
-        format.html { redirect_to posts_path, notice: "Post was successfully updated." }
-      end
+    respond_to do |format|
+      format.html { redirect_to posts_path, notice: "Atualizado" }
+      format.turbo_stream {
+        render turbo_stream: turbo_stream.replace(
+          helpers.dom_id(@post, :content),
+          partial: "posts/post",
+          locals: { post: @post }
+        )
+      }
+    end
     else
       respond_to do |format|
         flash.now[:alert] = "There was a problem updating the post."

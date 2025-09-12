@@ -1,10 +1,8 @@
-<%= turbo_frame_tag dom_id(@post) do %>
+<%= turbo_frame_tag "post_#{@post.id}_content" do %>
   <%= render @post %>
 
   <div class="mt-4">
-
     <% if user_signed_in? %>
-
       <div class="mt-4 pl-4 border-l border-gray-200">
         <h3 class="mt-6 font-bold text-lg">Comments</h3>
        
@@ -12,12 +10,11 @@
           <%= turbo_stream_from [@post, :comments] %>
           <%= render "comments/comments", comments: @post.comments, post: @post %>
         </div>
+
         <div id="new_comment_form">
           <%= render "comments/form", post: @post, comment: Comment.new %>
         </div>
-
       </div>
     <% end %>
-
   </div>
 <% end %>

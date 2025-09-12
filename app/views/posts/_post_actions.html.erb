@@ -1,9 +1,13 @@
 <div class="flex items-center gap-3 mt-4 text-sm">
   <% if safe_user_signed_in? %>
-    <%= link_to "Show", post, data: { turbo_frame: dom_id(post) }, class: "text-blue-600 hover:underline" %>
+    <%= link_to "Show", post,
+          data: { turbo_frame: "post_#{post.id}_content" },
+          class: "text-blue-600 hover:underline" %>
+
     <%= link_to "Edit", edit_post_path(post),
-          data: { turbo_frame: dom_id(post) },
+          data: { turbo_frame: "post_#{post.id}_content" },
           class: "text-yellow-600 hover:underline" %>
+
     <%= link_to "Delete", post,
           data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
           class: "text-red-600 hover:underline" %>
