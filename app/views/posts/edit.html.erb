@@ -1,4 +1,4 @@
-<%= turbo_frame_tag dom_id(@post) do %>
+<%= turbo_frame_tag "post_#{@post.id}_content" do %>
   <div class="card p-6 space-y-4">
     <h2 class="text-xl font-bold">Editing Post</h2>
     <%= render "form", post: @post %>

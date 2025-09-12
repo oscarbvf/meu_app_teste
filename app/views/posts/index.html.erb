@@ -20,9 +20,15 @@
 
     <!-- Posts list -->
     <% @posts.each do |post| %>
-      <%= turbo_frame_tag dom_id(post) do %>
-        <%= render post %>
-      <% end %>
+      <div id="post_<%= post.id %>_container" class="p-4 border rounded-lg shadow-sm bg-white">
+        <%= turbo_frame_tag "post_#{post.id}_content" do %>
+          <%= render post %>
+        <% end %>
+        <%= turbo_frame_tag "post_#{post.id}_actions" do %>
+          <%= render "posts/post_actions", post: post %>
+        <% end %>
+      </div>
     <% end %>
+
   </div>
 </div>
