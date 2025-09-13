@@ -37,9 +37,8 @@ class PasswordsController < ApplicationController
     rescue ActiveSupport::MessageVerifier::InvalidSignature
       redirect_to new_password_path, alert: "Password reset link is invalid or has expired." unless @user
     end
-  
+
     def user_params
       params.permit(:password, :password_confirmation)
     end
-
 end

@@ -18,5 +18,4 @@ class PasswordsMailer < Devise::Mailer
     # ajuste para o seu ambiente
     { host: "localhost", port: 3000 }
   end
-
 end
