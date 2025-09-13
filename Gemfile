@@ -56,6 +56,15 @@ group :development, :test do
 
   gem "letter_opener"
   gem "dotenv-rails"
+
+  # API documentation using Swagger
+  gem "rswag-api"
+  gem "rswag-ui"
+  gem "rswag-specs"
+
+  # RSpec for API tests and Swagger
+  gem "rspec-rails"
+  gem "rswag"
 end
 
 group :development do

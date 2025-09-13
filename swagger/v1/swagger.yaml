@@ -1,0 +1,164 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/comments":
+    get:
+      summary: List all comments
+      tags:
+      - Comments
+      responses:
+        '200':
+          description: comments found
+    post:
+      summary: Create a comment
+      tags:
+      - Comments
+      parameters: []
+      responses:
+        '201':
+          description: comment created
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                post_id:
+                  type: integer
+                body:
+                  type: string
+              required:
+              - post_id
+              - body
+  "/comments/{id}":
+    get:
+      summary: Show a comment
+      tags:
+      - Comments
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: comment found
+    put:
+      summary: Update a comment
+      tags:
+      - Comments
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: comment updated
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                body:
+                  type: string
+    delete:
+      summary: Delete a comment
+      tags:
+      - Comments
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: comment deleted
+  "/posts":
+    get:
+      summary: List all posts
+      tags:
+      - Posts
+      responses:
+        '200':
+          description: posts found
+    post:
+      summary: Create a post
+      tags:
+      - Posts
+      parameters: []
+      responses:
+        '201':
+          description: post created
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                body:
+                  type: string
+              required:
+              - title
+              - body
+  "/posts/{id}":
+    get:
+      summary: Show a post
+      tags:
+      - Posts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: post found
+    put:
+      summary: Update a post
+      tags:
+      - Posts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: post updated
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                body:
+                  type: string
+    delete:
+      summary: Delete a post
+      tags:
+      - Posts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: post deleted
+servers:
+- url: http://localhost:3000

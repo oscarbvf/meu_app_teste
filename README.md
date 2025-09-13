@@ -23,6 +23,8 @@ The goal of this project is to:
 - Devise (authentication)
 - Pundit (authorization)
 - JWT (API token authentication)
+- RSpec (for API testing)
+- Rswag (Swagger documentation for API)
 
 ## Getting Started
 
@@ -51,13 +53,15 @@ The goal of this project is to:
 
 ## Running Tests
 
-1. To run model tests:
+1. To run Web application tests (Minitest):
 
    rails test
-
-2. Make sure the test database is up to date:
-
    rails db:test:prepare
+
+2. To run API tests (RSpec):
+
+   bundle exec rspec
+
 
 ## Features
 
@@ -144,20 +148,18 @@ Include the JWT token in the Authorization header for protected endpoints:
 
 Authorization: Bearer <jwt_token>
 
-Posts Endpoints
+Posts Endpoints:
+- GET /posts → list all posts
+- GET /posts/:id → show a single post
+- POST /posts → create a post (authenticated)
+- PATCH /posts/:id → update a post (owner only)
+- DELETE /posts/:id → delete a post (owner only)
 
-GET /posts → list all posts
-GET /posts/:id → show a single post
-POST /posts → create a post (authenticated)
-PATCH /posts/:id → update a post (owner only)
-DELETE /posts/:id → delete a post (owner only)
-
-Comments Endpoints
-
-GET /posts/:post_id/comments → list comments for a post
-POST /posts/:post_id/comments → create a comment (authenticated)
-PATCH /comments/:id → update a comment (owner only)
-DELETE /comments/:id → delete a comment (owner only)
+Comments Endpoints:
+- GET /posts/:post_id/comments → list comments for a post
+- POST /posts/:post_id/comments → create a comment (authenticated)
+- PATCH /comments/:id → update a comment (owner only)
+- DELETE /comments/:id → delete a comment (owner only)
 
 Sample Responses
 
@@ -194,6 +196,20 @@ Get posts with JWT
 
 curl http://localhost:3000/api/v1/posts \
 -H "Authorization: Bearer <jwt_token>"
+
+
+## Swagger Documentation
+
+The API is fully documented with Swagger using rswag.
+
+Swagger UI can be accessed in development at:
+
+http://localhost:3000/api-docs
+
+
+The documentation includes all endpoints for Posts and Comments, request parameters, responses, and error messages.
+
+Rswag is configured to generate the OpenAPI spec automatically from the RSpec API tests.
 
 
 ## Development Practices
@@ -236,6 +252,10 @@ This project provides Docker configuration to simplify setup and development. Yo
 - How to implement authorization policies with Pundit
 
 - How to implement JWT-based API authentication
+
+- How to create Swagger documentation with Rswag
+
+- How to implement basic RSpec tests for API
 
 - How to write basic tests with Minitest to ensure model validations and CRUD operations work correctly
 
