@@ -10,8 +10,11 @@ WORKDIR /rails
 # Install basic packages
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y \
-        build-essential libpq-dev curl libjemalloc2 libvips sqlite3 git && \
+        build-essential libpq-dev curl libjemalloc2 libvips sqlite3 nodejs git && \
     rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+
+# Fix a consistent bundler version to deploy on Railway
+RUN gem install bundler -v 2.5.22 --no-document
 
 # Config environment to bundler
 ENV RAILS_ENV="production" \
@@ -29,9 +32,12 @@ RUN apt-get update -qq && \
 
 # Copy Gemfile and Gemfile.lock and install gems
 COPY Gemfile Gemfile.lock ./
-RUN bundle install && \
+#RUN bundle install && \
+#    rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
+#    bundle exec bootsnap precompile --gemfile
+RUN bundle _2.5.22_ install --jobs 4 --retry 5 && \
     rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
-    bundle exec bootsnap precompile --gemfile
+    bundle _2.5.22_ exec bootsnap precompile --gemfile
 
 # Copy application code
 COPY . .
@@ -66,4 +72,5 @@ ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 EXPOSE 3000
 
 # Default command to start Rails server
-CMD ["bash", "-c", "bundle exec rails server -b 0.0.0.0 -p 3000"]
+# CMD ["bash", "-c", "bundle exec rails server -b 0.0.0.0 -p 3000"]
+CMD ["bash", "-c", "bundle exec rails server -b 0.0.0.0 -p ${PORT:-3000}"]

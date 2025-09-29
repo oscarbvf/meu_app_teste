@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
-  mount Rswag::Ui::Engine => "/api-docs"
-  mount Rswag::Api::Engine => "/api-docs"
+  if defined?(Rswag::Ui::Engine)
+    mount Rswag::Ui::Engine => "/api-docs"
+  end
+  if defined?(Rswag::Api::Engine)
+    mount Rswag::Api::Engine => "/api-docs"
+  end
   devise_for :users
   resources :posts do
     resources :comments, only: [ :create, :destroy, :edit, :update ]
