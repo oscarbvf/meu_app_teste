@@ -83,7 +83,7 @@ end
 gem "ruby-lsp", "~> 0.23.23"
 
 # Authentication login
-gem "devise"
+gem "devise", "~> 4.9"
 
 # Authorization & permissions
 gem "pundit"
