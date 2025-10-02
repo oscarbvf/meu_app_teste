@@ -2,4 +2,4 @@
   <%= render @post %>
 <% end %>
 
-<%= render "shared/flash" %>
+<%= turbo_stream.prepend "notifications", partial: "shared/flash" %>

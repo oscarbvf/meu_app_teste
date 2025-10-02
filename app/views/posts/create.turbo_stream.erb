@@ -1,7 +1,5 @@
-<%= turbo_stream.prepend "posts_list" do %>
-  <%= render @post %>
-<% end %>
 
 <%= turbo_stream.update "new_post", "" %>
 
-<%= render "shared/flash" %>
+<%= turbo_stream.prepend "notifications", partial: "shared/flash" %>
+
