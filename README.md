@@ -28,6 +28,7 @@ The goal of this project is to:
 - JWT (API token authentication)
 - RSpec (for API testing)
 - Rswag (Swagger documentation for API)
+- Action Cable (for real-time Turbo Broadcasts)
 
 ## Getting Started
 
@@ -121,6 +122,21 @@ The goal of this project is to:
    The application uses customized Devise views for Sign In, Sign Up, and Forgot Password flows. This customization improves the user experience while preserving all Devise functionality, such as secure login, registration, and password reset.
 
    The application features custom real-time toast notifications using a Stimulus controller and Turbo Streams. Flash messages (notice, alert, etc.) are rendered as <turbo-stream> elements with a custom notify action, which dispatches a browser event captured by the Stimulus notifications_controller. This approach allows dynamic, temporary notifications to appear on the screen without full-page reloads, automatically fading out after a few seconds for a smooth user experience.
+
+7. Real-Time Updates with Turbo Broadcasts:
+   This project implements real-time updates using Rails 8’s built-in Turbo Broadcasts.
+   Posts are automatically synchronized across all connected clients when created, updated, or deleted — without requiring manual page refresh.
+
+   Key aspects of the implementation:
+
+   Automatic Turbo Broadcasts
+   Models (Post) broadcast changes using broadcasts_to. Each create, update, or destroy action triggers a Turbo Stream update that is received by all connected browsers.
+
+   UI Consistency and Security
+   Initially, broadcasts caused unauthorized UI elements (like edit/delete buttons) to appear for users who were not logged in.
+   To fix this, broadcasted partials were updated to respect session and authorization checks at render time. This ensures that each client only receives UI elements appropriate to their authentication/authorization state.
+
+   This combination provides a secure, real-time collaborative UI, while still enforcing all authentication and authorization rules defined by Devise and Pundit.
 
 ## API v1
 
@@ -263,6 +279,8 @@ This project provides Docker configuration to simplify setup and development. Yo
 - How to write basic tests with Minitest to ensure model validations and CRUD operations work correctly
 
 - How to configure and run the application with Docker and manage dependencies with Importmap
+
+- How to implement secure real-time updates with Turbo Broadcasts, ensuring that session/authorization checks are respected in broadcasted partials
 
 ## Deployment and Production Configuration
 
