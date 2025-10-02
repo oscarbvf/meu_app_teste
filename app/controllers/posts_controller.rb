@@ -9,6 +9,11 @@ class PostsController < ApplicationController
     @posts = Post.all
   end
 
+  def actions
+    @post = Post.find(params[:id])
+    render partial: "posts/post_actions", locals: { post: @post }
+  end
+
   # GET /posts/1 or /posts/1.json
   def show
     respond_to do |format|
@@ -37,16 +42,21 @@ class PostsController < ApplicationController
   def create
     @post = Post.new(post_params)
     authorize @post
-
-    respond_to do |format|
-      if @post.save
-        flash.now[:notice] = "Post was successfully created."
-        format.html { redirect_to posts_path, notice: "Post was successfully created." }
-        format.turbo_stream
-      else
-        flash.now[:alert] = "There was a problem creating the post."
-        format.html { render :new, status: :unprocessable_entity }
-        format.turbo_stream { render :new, status: :unprocessable_entity }
+    if @post.save
+      flash.now[:notice] = "Post was successfully created."
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.update("new_post", ""), 
+            turbo_stream.prepend("notifications", partial: "shared/flash")
+          ]
+        end
+        format.html { redirect_to posts_path, notice: "Post created." }
+      end
+    else
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("new_post", partial: "posts/form", locals: { post: @post }) }
+        format.html { render :new }
       end
     end
   end
@@ -55,15 +65,10 @@ class PostsController < ApplicationController
   def update
     authorize @post
     if @post.update(post_params)
-    respond_to do |format|
-      format.html { redirect_to posts_path, notice: "Atualizado" }
-      format.turbo_stream {
-        render turbo_stream: turbo_stream.replace(
-          helpers.dom_id(@post, :content),
-          partial: "posts/post",
-          locals: { post: @post }
-        )
-      }
+      flash.now[:notice] = "Post was successfully updated."
+      respond_to do |format|
+        format.html { redirect_to posts_path, notice: "Post successfully updated." }
+        format.turbo_stream
     end
     else
       respond_to do |format|
@@ -80,7 +85,7 @@ class PostsController < ApplicationController
     @post.destroy
     flash.now[:notice] = "Post was successfully deleted."
     respond_to do |format|
-      format.turbo_stream { render :destroy } # remove o post do frame
+      format.turbo_stream { render :destroy } # remove post from the frame
       format.html { redirect_to posts_path, notice: "Post was successfully deleted." }
     end
   end

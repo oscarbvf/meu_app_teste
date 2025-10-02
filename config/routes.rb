@@ -9,6 +9,9 @@ Rails.application.routes.draw do
   mount ActionCable.server => "/cable"
   resources :posts do
     resources :comments, only: [ :create, :destroy, :edit, :update ]
+    member do
+      get :actions
+    end
   end
 
   resources :users

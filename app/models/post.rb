@@ -4,24 +4,29 @@ class Post < ApplicationRecord
 
   has_many :comments, dependent: :destroy
 
-  after_create_commit -> {
+  after_create_commit do
+    # general broadcast
     broadcast_prepend_to "posts",
       target: "posts_list",
+      partial: "posts/post_broadcast",
+      locals: { post: self }
+    # logged users broadcast
+    broadcast_replace_to "posts_logged_in",
+      target: "post_#{id}_container",
       partial: "posts/post_container",
       locals: { post: self }
-  }
+  end
 
   after_update_commit -> {
-    # Update content frame
+    # general broadcast
     broadcast_replace_to "posts",
-      target: "post_#{id}_content",
-      partial: "posts/post_container",
+      target: "post_#{id}_container",
+      partial: "posts/post_broadcast",
       locals: { post: self }
-
-    # Update actions frame
-    broadcast_replace_to "posts",
-      target: "post_#{id}_actions",
-      partial: "posts/post_actions",
+    # logged users broadcast
+    broadcast_replace_to "posts_logged_in",
+      target: "post_#{id}_container",
+      partial: "posts/post_container",
       locals: { post: self }
   }
 
