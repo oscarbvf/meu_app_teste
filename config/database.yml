@@ -51,4 +51,4 @@ production:
   password: <%= ENV['PGPASSWORD'] %>
   database: <%= ENV['PGDATABASE'] %>
   port: <%= ENV['PGPORT'] %>
-#  url: <%= ENV["DATABASE_URL"] %>
+  url: <%= ENV["DATABASE_URL"] %>
