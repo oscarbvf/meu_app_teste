@@ -45,10 +45,12 @@ test:
   pool: 5
 
 production:
-  <<: *default
-  host: <%= ENV['PGHOST'] %>
-  username: <%= ENV['PGUSER'] %>
-  password: <%= ENV['PGPASSWORD'] %>
-  database: <%= ENV['PGDATABASE'] %>
-  port: <%= ENV['PGPORT'] %>
+  adapter: postgresql
   url: <%= ENV["DATABASE_URL"] %>
+  #encoding: unicode
+  #pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  #host: <%= ENV['PGHOST'] %>
+  #username: <%= ENV['PGUSER'] %>
+  #password: <%= ENV['PGPASSWORD'] %>
+  #database: <%= ENV['PGDATABASE'] %>
+  #port: <%= ENV['PGPORT'] %>
