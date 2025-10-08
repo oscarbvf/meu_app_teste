@@ -48,3 +48,10 @@ production:
   <<: *default
   url: <%= ENV["DATABASE_URL"] %>
   database: <%= ENV["PGDATABASE"] || "railway" %>
+  
+  connects_to:
+    database:
+      writing: primary
+      queue: primary
+      cache: primary
+      cable: primary
