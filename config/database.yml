@@ -45,12 +45,6 @@ test:
   pool: 5
 
 production:
-  adapter: postgresql
+  <<: *default
   url: <%= ENV["DATABASE_URL"] %>
-
-  connects_to:
-    database:
-      writing: primary
-      queue: primary
-      cache: primary
-      cable: primary
+  database: <%= ENV["PGDATABASE"] || "railway" %>

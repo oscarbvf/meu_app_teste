@@ -57,7 +57,7 @@ Rails.application.configure do
   # - For production, you would need something like SolidQueue or Sidekiq + Redis.
   # - Good simulation of background behavior for tests
   config.active_job.queue_adapter = :solid_queue
-  config.solid_queue.connects_to = { database: { writing: :queue } }
+  #  config.solid_queue.connects_to = { database: { writing: :queue } }
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
