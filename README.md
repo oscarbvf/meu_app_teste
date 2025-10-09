@@ -261,6 +261,22 @@ This project provides Docker configuration to simplify setup and development. Yo
 
 - How to configure and run the application with Docker and manage dependencies with Importmap
 
+## Deployment and Production Configuration
+
+This application was successfully deployed to Railway, as part of a learning exercise to understand production deployment workflows for Ruby on Rails applications.
+
+### Production Environment Highlights
+
+- Platform: Railway (temporary deployment for learning purposes)
+- Database: PostgreSQL (managed by Railway)
+- Runtime: Ruby 3.3 + Rails 8
+- Web Process: Defined via Procfile (bundle exec rails server -p $PORT -b 0.0.0.0)
+- Environment Variables: Managed via Railway’s built-in configuration panel
+- Migrations: Executed using railway run rake db:migrate
+- Build Configuration: Default Railway buildpacks (no Dockerfile required)
+
+This deployment validated that the application can run in a cloud production environment, with a PostgreSQL database and persistent data layer.
+The environment has since been removed to avoid charges, but the full setup is documented for reproducibility.
 
 ## License
 
