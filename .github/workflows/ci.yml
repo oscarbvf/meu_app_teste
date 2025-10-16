@@ -13,6 +13,7 @@ jobs:
         env:
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: test
           POSTGRES_TEST_DB: ${{ secrets.POSTGRES_TEST_DB }}
           POSTGRES_HOST: localhost
           DATABASE_URL: postgres://postgres:password@localhost:5432/test
@@ -24,6 +25,13 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+
+    env:
+      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      POSTGRES_DB: test
+      POSTGRES_TEST_DB: ${{ secrets.POSTGRES_TEST_DB }}
+      DATABASE_URL: postgres://postgres:password@localhost:5432/test
 
     steps:
       - uses: actions/checkout@v4
