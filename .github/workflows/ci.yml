@@ -34,9 +34,9 @@ jobs:
         run: |
           gem install bundler
           bundle install --jobs 4 --retry 3
-      - name: Setup DB config
-        run: |
-          cp config/database.yml.ci config/database.yml
+#      - name: Setup DB config
+#        run: |
+#          cp config/database.yml.ci config/database.yml
       - name: Prepare DB & run tests
         env:
           RAILS_ENV: test
