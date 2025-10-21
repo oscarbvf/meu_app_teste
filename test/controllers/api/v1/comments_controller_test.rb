@@ -57,8 +57,9 @@ class Api::V1::CommentsControllerTest < ActionDispatch::IntegrationTest
 
   test "should not update comment by another user" do
     other_user = users(:two)
-    payload = { user_id: other_user.id, exp: 1.hour.from_now.to_i }
-    token = JWT.encode(payload, Rails.application.credentials.jwt_secret, "HS256")
+    #    payload = { user_id: other_user.id, exp: 1.hour.from_now.to_i }
+    #    token = JWT.encode(payload, Rails.application.credentials.jwt_secret, "HS256")
+    token = JwtService.encode(user_id: other_user.id)
 
     patch api_v1_post_comment_url(@post, @comment),
           params: { comment: { body: "Operation now allowed" } },
