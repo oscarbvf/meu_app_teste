@@ -278,6 +278,53 @@ This application was successfully deployed to Railway, as part of a learning exe
 This deployment validated that the application can run in a cloud production environment, with a PostgreSQL database and persistent data layer.
 The environment has since been removed to avoid charges, but the full setup is documented for reproducibility.
 
+## Continuous Integration (CI)
+
+This project includes a Continuous Integration (CI) pipeline configured with GitHub Actions to ensure code quality, consistency, and reliability.
+
+### Workflow Overview
+
+The workflow file .github/workflows/ci.yml is triggered automatically on:
+
+Every push or pull request to the main branch
+
+Manual runs (via the “Run workflow” button in the GitHub Actions tab)
+
+### Main Steps
+
+1. Set up environment
+
+- Runs on the latest Ubuntu runner
+- Installs Ruby 3.3, Node.js, Yarn, and PostgreSQL service
+- Caches gems to speed up subsequent builds
+
+2. Install dependencies
+
+bundle install
+yarn install
+
+3. Prepare the database
+
+rails db:create db:migrate
+
+4. Run tests
+
+- Executes Minitest for the web application
+- Executes RSpec for API tests
+- Ensures that all tests pass before allowing merges into main
+
+5. Linting and Code Style
+
+- Runs Rubocop to enforce Ruby style conventions
+- Fails the workflow if style violations or syntax errors are found
+
+### Benefits
+
+- Automatic validation: Every commit and pull request is tested automatically.
+- Consistent quality: Prevents broken builds or untested code from being merged.
+- Faster development: Developers receive immediate feedback on test results.
+- Reproducibility: Ensures that the application can be set up and tested identically across environments.
+
 ## License
 
 This project is for learning purposes and has no specific license.
