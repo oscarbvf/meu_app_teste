@@ -1,5 +1,5 @@
 class JwtService
-  SECRET = Rails.application.credentials.jwt_secret
+  SECRET = Rails.application.credentials.jwt_secret || "test_secret"
   ALGORITHM = "HS256"
 
   def self.encode(payload)
