@@ -12,11 +12,7 @@ jobs:
         image: postgres:15
         env:
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_TEST_DB: ${{ secrets.POSTGRES_TEST_DB }}
-          POSTGRES_HOST: postgres
-          DATABASE_URL: postgres://postgres:password@postgres:5432/test
-          RAILS_ENV: test
+          POSTGRES_DB: test
           POSTGRES_HOST_AUTH_METHOD: trust
         ports:
           - 5432:5432
