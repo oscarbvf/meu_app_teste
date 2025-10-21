@@ -11,7 +11,7 @@ jobs:
       postgres:
         image: postgres:15
         env:
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_USER: postgres
           POSTGRES_DB: test
           POSTGRES_HOST_AUTH_METHOD: trust
         ports:
@@ -22,6 +22,9 @@ jobs:
           --health-timeout 5s
           --health-retries 5
 
+    env:
+      DATABASE_URL: postgres://postgres@localhost:5432/test
+  
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
