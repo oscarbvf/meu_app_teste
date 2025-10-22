@@ -2,8 +2,6 @@
 
 # My First Rails App
 
-# My First Rails App
-
 [![CI](https://github.com/oscarbvf/meu_app_teste/actions/workflows/ci.yml/badge.svg)](https://github.com/oscarbvf/meu_app_teste/actions/workflows/ci.yml)
 [![Deploy on Railway](https://img.shields.io/badge/Deployed%20on-Railway-0B0D0E?logo=railway&logoColor=white)](https://railway.app/project/dee0719e-d6c5-4267-bc83-60e98b3234a5)
 
