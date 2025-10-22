@@ -2,6 +2,11 @@
 
 # My First Rails App
 
+# My First Rails App
+
+[![CI](https://github.com/oscarbvf/meu_app_teste/actions/workflows/ci.yml/badge.svg)](https://github.com/oscarbvf/meu_app_teste/actions/workflows/ci.yml)
+[![Deploy on Railway](https://img.shields.io/badge/Deployed%20on-Railway-0B0D0E?logo=railway&logoColor=white)](https://railway.app/project/dee0719e-d6c5-4267-bc83-60e98b3234a5)
+
 This is a simple Ruby on Rails project created as my first experience with the framework.  
 It uses `scaffold` to implement a basic CRUD (Create, Read, Update, Delete) interface for posts and comments.
 
@@ -325,6 +330,17 @@ rails db:create db:migrate
 - Faster development: Developers receive immediate feedback on test results.
 - Reproducibility: Ensures that the application can be set up and tested identically across environments.
 
+## Continuous Deployment (CD)
+
+This project uses **Continuous Deployment (CD)** integrated with [Railway](https://railway.app).  
+Every time a pull request is merged into the `master` branch, the application is automatically built and deployed to the production environment.
+
+The deployment process is fully automated through Railway’s GitHub integration:
+- Detects new commits on the `master` branch  
+- Builds and deploys the application using the latest code  
+- Manages environment variables securely within the Railway platform  
+
+This setup ensures that the production environment is always up to date with the latest tested and validated code, maintaining consistency between development and deployment stages.
 
 ## License
 
